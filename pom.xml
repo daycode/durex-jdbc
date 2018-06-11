@@ -8,5 +8,60 @@
     <artifactId>durex-jdbc</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <common-lang2.version>2.6</common-lang2.version>
+        <persistence-api.version>1.0</persistence-api.version>
+        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+        <slf4j.version>LATEST</slf4j.version>
+        <mysql.version>5.1.46</mysql.version>
+        <jdk.version>1.8</jdk.version>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${common-lang2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${persistence-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>${spring-boot.version}</version>
+            <!--<scope>required</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>required</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <scope>required</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
