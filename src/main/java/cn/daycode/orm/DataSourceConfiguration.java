@@ -15,7 +15,7 @@ public class DataSourceConfiguration {
    @ConditionalOnBean
    @ConfigurationProperties("spring.datasource")
     public DataSource dataSource() {
-
+        return null;
    }
 
 
