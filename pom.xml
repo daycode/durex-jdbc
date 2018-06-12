@@ -6,51 +6,78 @@
 
     <groupId>cn.daycode</groupId>
     <artifactId>durex-jdbc</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <modules>
+        <module>durex-jdbc-core</module>
+        <module>durex-jdbc-spring</module>
+        <module>durex-jdbc-spring-boot-starter</module>
+    </modules>
+
     <properties>
+
+        <!-- 3rd version -->
         <common-lang2.version>2.6</common-lang2.version>
         <persistence-api.version>1.0</persistence-api.version>
         <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
         <slf4j.version>LATEST</slf4j.version>
         <mysql.version>5.1.46</mysql.version>
+
+        <!-- jdk version -->
         <jdk.version>1.8</jdk.version>
+
+        <!-- module version -->
+        <durex-jdbc-core.version>1.0.0</durex-jdbc-core.version>
+        <durex-jdbc-spring.version>1.0.0</durex-jdbc-spring.version>
+        <durex-jdbc-spring-boot-starter.version>1.0.0</durex-jdbc-spring-boot-starter.version>
+
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${common-lang2.version}</version>
-        </dependency>
+    <dependencyManagement>
 
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${persistence-api.version}</version>
-        </dependency>
+        <dependencies>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${common-lang2.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>${spring-boot.version}</version>
-            <!--<scope>required</scope>-->
-        </dependency>
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${persistence-api.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>required</scope>
-        </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-            <scope>required</scope>
-        </dependency>
-    </dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>required</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>required</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
 
     <build>
         <plugins>

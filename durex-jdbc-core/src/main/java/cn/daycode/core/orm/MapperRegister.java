@@ -1,85 +1,27 @@
-package cn.daycode.configuration.repository;
+package cn.daycode.core.orm;
 
-import cn.daycode.annotation.BindEntity;
-import cn.daycode.orm.*;
-import cn.daycode.orm.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.annotation.Order;
-import org.springframework.core.type.AnnotationMetadata;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
+/**
+ * Mapper 注册器，将一个自定义实体类信息封装到 Mapper 里
+ *
+ * @author zch
+ * @since 2018/6/13
+ */
+public class MapperRegister {
 
-    private Logger logger = LoggerFactory.getLogger(RepositoriesRegistrar.class);
+    private final static Logger logger = LoggerFactory.getLogger(MapperRegister.class);
 
-    RepositoriesRegistrar() {
-
-    }
-
-    protected Class<? extends Annotation> getAnnotation() {
-        return EnableRepositories.class;
-    }
-
-    @Override
-    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
-        AnnotationAttributes attributes = AnnotationAttributes.fromMap(annotationMetadata.getAnnotationAttributes(EnableRepositories.class.getName()));
-        String basePackage = attributes.getString("basePackage");
-        //扫描包里类
-        List<Class<?>> repositoryClasses = Scanner.getClasses(basePackage);
-
-        for (Class<?> repositoryClass : repositoryClasses) {
-            registerRepository(repositoryClass, beanDefinitionRegistry);
-        }
-
-        logger.info(" - 注册仓库完成");
-    }
-
-    private void registerRepository(Class<?> repositoryClass, BeanDefinitionRegistry registry) {
-        Class<?>[] interfaces = repositoryClass.getInterfaces();
-
-        if (null == interfaces || 0 == interfaces.length) {
-            return;
-        }
-        for (Class<?> interfaceClass : interfaces) {
-            if (interfaceClass.equals(Repository.class)) {
-
-                BindEntity bindEntity = repositoryClass.getAnnotation(BindEntity.class);
-
-                if (null != bindEntity) {
-                    registerEntity(bindEntity.value());
-                    RepositoryRegister.repositoryEntity(repositoryClass, bindEntity.value());
-                }else {
-                    logger.error("missing @BindEntity annotation");
-                    return;
-                }
-
-                RootBeanDefinition beanDefinition = new RootBeanDefinition();
-                beanDefinition.setBeanClass(RepositoryFactoryBean.class);
-                beanDefinition.setLazyInit(true);
-                beanDefinition.getPropertyValues().addPropertyValue("repositoryClass", repositoryClass);
-                String beanName = getBeanName(repositoryClass.getSimpleName());
-                registry.registerBeanDefinition(beanName, beanDefinition);
-                logger.info(" - {} - load repository success", repositoryClass.getName());
-            }
-        }
-    }
-
-    private void registerEntity(Class<?> entityClass) {
+    public static void registerEntity(Class<?> entityClass) {
         Field[] fields = entityClass.getDeclaredFields();
         Map<String, String> fieldMap = new HashMap<>();
         Map<String, String> colMap = new HashMap<>();
@@ -113,7 +55,7 @@ public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
             }
 
             Transient transientType = field.getAnnotation(Transient.class);
-            if(null != transientType) {
+            if (null != transientType) {
                 continue;
             }
 
@@ -139,7 +81,7 @@ public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
                 Method setter = entityClass.getMethod(setterName, field.getType());
                 setterMap.put(field.getName(), setter);
             } catch (NoSuchMethodException e) {
-                logger.error("method not found :{}", setterName, e);
+                logger.error("method not found : " + setterName, e);
             }
 
             //getter
@@ -148,7 +90,7 @@ public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
                 Method getter = entityClass.getMethod(getterName);
                 getterMap.put(field.getName(), getter);
             } catch (NoSuchMethodException e) {
-                logger.error("method not found :{}", getterName, e);
+                logger.error("method not found :" + getterName, e);
             }
         }
 
@@ -156,7 +98,7 @@ public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
         Mapper.columnMap(entityClass, colMap);
         Mapper.setterMap(entityClass, setterMap);
         Mapper.getterMap(entityClass, getterMap);
-        logger.info(" - {} - load entity success", entityClass.getName());
+        logger.info(entityClass.getName() + "- load entity success");
     }
 
     private static String toSetterName(String fieldName) {
@@ -169,7 +111,7 @@ public class RepositoriesRegistrar implements ImportBeanDefinitionRegistrar {
         return "get" + fieldName.replaceFirst(firstLetter, firstLetter.toUpperCase());
     }
 
-    private String getBeanName(String text) {
+    private static String getBeanName(String text) {
         String firstLetter = text.substring(0, 1);
         String firstLow = firstLetter.toLowerCase();
         text = text.replaceFirst(firstLetter, firstLow);

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>durex-jdbc</artifactId>
+        <groupId>cn.daycode</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>durex-jdbc-spring-boot-starter</artifactId>
+    <version>${durex-jdbc-spring-boot-starter.version}</version>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>cn.daycode</groupId>
+            <artifactId>durex-jdbc-core</artifactId>
+            <version>${durex-jdbc-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.daycode</groupId>
+            <artifactId>durex-jdbc-spring</artifactId>
+            <version>${durex-jdbc-spring.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
