@@ -1,26 +1,16 @@
 package cn.daycode.core.binding;
 
-import cn.daycode.core.annotation.CountQuery;
 import cn.daycode.core.annotation.Param;
-import cn.daycode.core.annotation.SelectQuery;
-import cn.daycode.core.annotation.UpdateQuery;
-import cn.daycode.core.mapping.Mapper;
-import cn.daycode.core.orm.CommonRowMapper;
 import cn.daycode.core.orm.RepositoryImpl;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
