@@ -1,9 +1,8 @@
 package cn.daycode.spring.repository;
 
 import cn.daycode.core.annotation.BindEntity;
-import cn.daycode.core.orm.Mapper;
-import cn.daycode.core.orm.MapperRegister;
-import cn.daycode.core.orm.RepositoryRegister;
+import cn.daycode.core.binding.MapperRegister;
+import cn.daycode.core.binding.RepositoryRegister;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -13,16 +12,8 @@ import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.core.type.filter.TypeFilter;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**

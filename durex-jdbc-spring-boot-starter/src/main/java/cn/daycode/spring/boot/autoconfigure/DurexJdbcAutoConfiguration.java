@@ -1,7 +1,7 @@
 package cn.daycode.spring.boot.autoconfigure;
 
 import cn.daycode.core.annotation.Repository;
-import cn.daycode.core.orm.Mapper;
+import cn.daycode.core.mapping.Mapper;
 import cn.daycode.spring.repository.ClassPathRepositoryScanner;
 import cn.daycode.spring.repository.RepositoryFactoryBean;
 import org.slf4j.Logger;

@@ -1,5 +1,6 @@
-package cn.daycode.core.orm;
+package cn.daycode.core.mapping;
 
+import cn.daycode.core.parsing.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

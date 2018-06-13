@@ -1,7 +1,7 @@
 package cn.daycode.spring.repository;
 
-import cn.daycode.core.orm.RepositoryProxyFactory;
-import cn.daycode.core.orm.RepositoryRegister;
+import cn.daycode.core.binding.RepositoryProxyFactory;
+import cn.daycode.core.binding.RepositoryRegister;
 import cn.daycode.spring.support.JdbcTemplateDaoSupport;
 import org.springframework.beans.factory.FactoryBean;
 

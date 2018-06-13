@@ -1,4 +1,6 @@
-package cn.daycode.core.orm;
+package cn.daycode.core.binding;
+
+import cn.daycode.core.orm.RepositoryImpl;
 
 import java.util.HashMap;
 import java.util.Map;
