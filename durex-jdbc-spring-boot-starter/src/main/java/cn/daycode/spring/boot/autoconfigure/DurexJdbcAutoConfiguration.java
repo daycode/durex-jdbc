@@ -57,32 +57,7 @@ public class DurexJdbcAutoConfiguration {
 
     @PostConstruct
     public void loadSql() {
-        List<File> files = Scanner.getFiles(properties.getDirectory(), properties.getSuffix());
-
-        for (File file : files) {
-            List<String> lines;
-            try {
-                lines = Files.readAllLines(Paths.get(file.getPath()));
-                boolean skipNext = false;
-                for (int index = 0; index < lines.size(); index++) {
-                    if (lines.get(index).trim().isEmpty()) {
-                        continue;
-                    }
-
-                    if (skipNext) {
-                        skipNext = false;
-                        continue;
-                    }
-                    if (lines.get(index).startsWith("--")) {
-                        Mapper.sql(lines.get(index).replace("--", ""), lines.get(index + 1));
-                        skipNext = true;
-                    }
-                }
-            } catch (IOException e) {
-                logger.error("读取文件失败", e);
-            }
-            logger.info("load " + file.getName() + " finish");
-        }
+        Mapper.loadSql(properties.getDirectory(), properties.getSuffix());
     }
 
     @Bean(value = "jdbcTemplate")
@@ -127,7 +102,8 @@ public class DurexJdbcAutoConfiguration {
                 scanner.registerFilters();
                 scanner.doScan(StringUtils.toStringArray(packages));
             } catch (IllegalStateException ex) {
-                logger.debug("Could not determine auto-configuration package, automatic Repository scanning disabled.", ex);
+                logger.debug("Could not determine auto-configuration package, " +
+                        "automatic Repository scanning disabled.", ex);
             }
 
         }

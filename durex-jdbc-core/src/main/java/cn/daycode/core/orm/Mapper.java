@@ -3,8 +3,13 @@ package cn.daycode.core.orm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -169,5 +174,35 @@ public class Mapper {
 
     public static String sql(String key) {
         return SQLMap.get(key);
+    }
+
+    public static void loadSql(String directory, String suffix) {
+
+        List<File> files = Scanner.getFiles(directory, directory);
+
+        for (File file : files) {
+            List<String> lines;
+            try {
+                lines = Files.readAllLines(Paths.get(file.getPath()));
+                boolean skipNext = false;
+                for (int index = 0; index < lines.size(); index++) {
+                    if (lines.get(index).trim().isEmpty()) {
+                        continue;
+                    }
+
+                    if (skipNext) {
+                        skipNext = false;
+                        continue;
+                    }
+                    if (lines.get(index).startsWith("--")) {
+                        Mapper.sql(lines.get(index).replace("--", ""), lines.get(index + 1));
+                        skipNext = true;
+                    }
+                }
+            } catch (IOException e) {
+                logger.error("读取文件失败", e);
+            }
+            logger.info("load " + file.getName() + " finish");
+        }
     }
 }
