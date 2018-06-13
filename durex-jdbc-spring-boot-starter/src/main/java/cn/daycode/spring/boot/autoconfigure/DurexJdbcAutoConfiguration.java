@@ -2,6 +2,7 @@ package cn.daycode.spring.boot.autoconfigure;
 
 import cn.daycode.core.annotation.Repository;
 import cn.daycode.core.mapping.Mapper;
+import cn.daycode.core.orm.Freedom;
 import cn.daycode.spring.repository.ClassPathRepositoryScanner;
 import cn.daycode.spring.repository.RepositoryFactoryBean;
 import org.slf4j.Logger;
@@ -59,13 +60,17 @@ public class DurexJdbcAutoConfiguration {
     @Bean(value = "namedParameterJdbcTemplate")
     @ConditionalOnMissingBean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Freedom.setNamedParameterJdbcTemplate(namedParameterJdbcTemplate);
+        return namedParameterJdbcTemplate;
     }
 
     @Bean(value = "jdbcTemplate")
     @ConditionalOnMissingBean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        Freedom.setJdbcTemplate(jdbcTemplate);
+        return jdbcTemplate;
     }
 
 
