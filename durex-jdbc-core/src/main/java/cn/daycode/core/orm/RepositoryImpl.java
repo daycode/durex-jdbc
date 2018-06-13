@@ -137,23 +137,18 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     @Override
     public T findById(ID id) {
         String sql = "SELECT * FROM ${TABLE} WHERE ${ID} = ?";
-        sql = sql.replace("${TABLE}", tableName)
-                .replace("${ID}", Mapper.getColumnName(entityClass, Mapper.id(entityClass)));
+        sql = fillSQL(sql);
         List<T> results = jdbcTemplate.query(sql, new CommonRowMapper<>(entityClass), id);
         if (null == results || results.isEmpty()) {
             return null;
         }
-        if (results.size() > 0) {
-            return results.get(0);
-        } else {
-            return null;
-        }
+        return results.get(0);
     }
 
     @Override
     public List<T> findAll() {
-        String sql = "SELECT * FROM ${TABLE} "
-                .replace("${TABLE}", tableName);
+        String sql = "SELECT * FROM ${TABLE} ";
+        sql = fillSQL(sql);
         return jdbcTemplate.query(sql, new CommonRowMapper<>(entityClass));
     }
 
@@ -165,8 +160,7 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     @Override
     public void delete(ID id) {
         String sql = "DELETE FROM ${TABLE} WHERE ${ID} = ?";
-        sql = sql.replace("${TABLE}", tableName)
-                .replace("${ID}", Mapper.getColumnName(entityClass, Mapper.id(entityClass)));
+        sql = fillSQL(sql);
         jdbcTemplate.update(sql, id);
     }
 
@@ -192,13 +186,12 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     @Override
     public void update(Map<String, Object> params, ID id) {
         if (null == id) {
+            logger.error("");
             return;
         }
         if (null == params || params.isEmpty()) {
             return;
         }
-
-
         StringBuilder sqlBuilder = new StringBuilder("UPDATE ")
                 .append(tableName)
                 .append(" SET ");
@@ -396,4 +389,14 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
         return null;
     }
 
+    /**
+     * 填充SQL变量
+     * @param sql sql语句
+     * @return 填充后sql语句
+     */
+    private String fillSQL(String sql) {
+        sql = sql.replace("${TABLE}", tableName)
+                .replace("${ID}", Mapper.getColumnName(entityClass, Mapper.id(entityClass)));
+        return sql;
+    }
 }
