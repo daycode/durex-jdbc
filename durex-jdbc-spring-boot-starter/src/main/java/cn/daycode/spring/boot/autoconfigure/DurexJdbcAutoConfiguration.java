@@ -2,7 +2,6 @@ package cn.daycode.spring.boot.autoconfigure;
 
 import cn.daycode.core.annotation.Repository;
 import cn.daycode.core.orm.Mapper;
-import cn.daycode.core.orm.Scanner;
 import cn.daycode.spring.repository.ClassPathRepositoryScanner;
 import cn.daycode.spring.repository.RepositoryFactoryBean;
 import org.slf4j.Logger;
@@ -29,10 +28,6 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
