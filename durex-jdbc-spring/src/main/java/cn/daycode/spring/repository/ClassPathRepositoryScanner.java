@@ -77,7 +77,7 @@ public class ClassPathRepositoryScanner extends ClassPathBeanDefinitionScanner {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
 
         if (beanDefinitions.isEmpty()) {
-            logger.warn("No MyBatis mapper was found in '" +
+            logger.warn("No repository was found in '" +
                     Arrays.toString(basePackages) + "' package. Please check your configuration.");
         } else {
             processBeanDefinitions(beanDefinitions);
