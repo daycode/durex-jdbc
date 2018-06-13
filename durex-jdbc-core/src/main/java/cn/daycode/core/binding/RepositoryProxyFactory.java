@@ -10,9 +10,11 @@ import cn.daycode.core.orm.RepositoryImpl;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
@@ -25,13 +27,12 @@ import java.util.Map;
  * 仓库代理
  * Created by jl on 17-7-6.
  */
-@Component
 public class RepositoryProxyFactory {
 
     private final static Logger logger = LoggerFactory.getLogger(RepositoryProxyFactory.class);
 
     // TODO 后续将sql拼装拆分开
-    public static Object newProxyInstance(Class<?> interfaceClass, Class<?> entityClass, NamedParameterJdbcTemplate namedParameterJdbcTemplate) throws IllegalArgumentException {
+    public static Object newProxyInstance(Class<?> interfaceClass, Class<?> entityClass, NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate) throws IllegalArgumentException {
         return Proxy.newProxyInstance(interfaceClass.getClassLoader(),
                 new Class[]{interfaceClass},
                 (proxy, method, args) -> {

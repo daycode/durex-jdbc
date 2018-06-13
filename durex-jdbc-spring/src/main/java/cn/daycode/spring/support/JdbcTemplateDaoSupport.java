@@ -3,6 +3,7 @@ package cn.daycode.spring.support;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import static org.springframework.util.Assert.notNull;
@@ -15,20 +16,33 @@ import static org.springframework.util.Assert.notNull;
  */
 public class JdbcTemplateDaoSupport extends DaoSupport {
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * bean 注册时，Spring 会自动将 bean 的属性自动注入
      *
      * @see PropertyAccessor
      */
-    @Autowired
-    public void setJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate;
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+        return namedParameterJdbcTemplate;
     }
 
-    public NamedParameterJdbcTemplate getJdbcTemplate() {
+    @Autowired
+    public JdbcTemplateDaoSupport setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        return this;
+    }
+
+    public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
+    }
+
+    @Autowired
+    public JdbcTemplateDaoSupport setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        return this;
     }
 
     /**
@@ -37,5 +51,6 @@ public class JdbcTemplateDaoSupport extends DaoSupport {
     @Override
     protected void checkDaoConfig() {
         notNull(this.jdbcTemplate, "jdbcTemplate are required");
+        notNull(this.namedParameterJdbcTemplate, "namedParameterJdbcTemplate are required");
     }
 }

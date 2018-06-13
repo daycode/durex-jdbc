@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.StringUtils;
 
@@ -55,10 +56,16 @@ public class DurexJdbcAutoConfiguration {
         Mapper.loadSql(properties.getDirectory(), properties.getSuffix());
     }
 
+    @Bean(value = "namedParameterJdbcTemplate")
+    @ConditionalOnMissingBean
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
+        return new NamedParameterJdbcTemplate(dataSource);
+    }
+
     @Bean(value = "jdbcTemplate")
     @ConditionalOnMissingBean
-    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 
 

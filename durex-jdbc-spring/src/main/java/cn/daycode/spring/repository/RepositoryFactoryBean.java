@@ -36,7 +36,7 @@ public class RepositoryFactoryBean extends JdbcTemplateDaoSupport implements Fac
     public Object getObject() throws Exception {
         return RepositoryProxyFactory
                 .newProxyInstance(this.repositoryClass,
-                        RepositoryRegister.entityClass(this.repositoryClass), getJdbcTemplate());
+                        RepositoryRegister.entityClass(this.repositoryClass), getNamedParameterJdbcTemplate(), getJdbcTemplate());
     }
 
     @Override

@@ -44,6 +44,15 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
         tableName = table.name();
     }
 
+    public RepositoryImpl<T, ID> setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        return this;
+    }
+
+    public RepositoryImpl<T, ID> setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        return this;
+    }
 
     private ID insertWithId(String sql, Object... objects) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -178,56 +187,6 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     public void update(String updateQuery, Object... params) {
         jdbcTemplate.update(updateQuery, params);
     }
-
-        /*public List<T> findByIdsWithCache(List<ID> ids, String sortQuery, long expire) {
-            List<ID> tempIds = new ArrayList<>();
-            List<Integer> tempIndexs = new ArrayList<>();
-            List<T> results = new ArrayList<>();
-            TreeMap<Integer, T> resultMap = new TreeMap<>();
-
-            if(null == ids) {
-                return results;
-            }
-
-            for(int index = 0; index < ids.size(); index++) {
-                String key = getKey(ids.get(index));
-                String json = getValueRedisTemplate().get(key);
-                T entity = null;
-                if (StringUtils.isNotBlank(json)) {
-                    entity = (T) JSON.parseObject(json, entityClass);
-                    resultMap.put(index, entity);
-//                logger.info("cache get key:{}", key);
-                }else {
-                    tempIds.add(ids.get(index));
-                    tempIndexs.add(index);
-                }
-            }
-            if(!tempIds.isEmpty()) {
-                String params = tempIds.toString()
-                        .replace("[", "(")
-                        .replace("]", ")");
-                String sql = "SELECT * FROM ${TABLE} WHERE ${ID} IN " + params + " " + sortQuery;
-                sql = sql.replace("${TABLE}", tableName)
-                        .replace("${ID}", Mapper.id(entityClass));
-                List<T> list = jdbcTemplate.query(sql, new CommonRowMapper<T>(entityClass), new Object[]{});
-                if(null != list && !list.isEmpty()) {
-                    for(int index = 0; index < list.size(); index++) {
-                        T entity = list.get(index);
-                        if(null != entity) {
-                            String key = getKey(getId(entity));
-                            resultMap.put(tempIndexs.get(index), entity);
-                            getValueRedisTemplate().setObject(key, entity, expire);
-//                        logger.info("cache put key:{}, expire:{}", key, expire);
-                        }
-                    }
-                }
-            }
-
-            for(Map.Entry<Integer, T> entry : resultMap.entrySet()) {
-                results.add(entry.getValue());
-            }
-            return results;
-        }*/
 
     @Transactional
     @Override
