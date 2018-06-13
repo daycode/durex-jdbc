@@ -178,7 +178,7 @@ public class Mapper {
 
     public static void loadSql(String directory, String suffix) {
 
-        List<File> files = Scanner.getFiles(directory, directory);
+        List<File> files = Scanner.getFiles(directory, suffix);
 
         for (File file : files) {
             List<String> lines;
