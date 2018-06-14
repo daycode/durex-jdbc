@@ -240,7 +240,8 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     }
 
     public long count() {
-        String sql = "SELECT COUNT(1) FROM " + tableName + ";";
+        String sql = "SELECT COUNT(1) FROM ${TABLE};";
+        sql = fillSQL(sql);
         List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
         if (null != results && !results.isEmpty()) {
             Map<String, Object> map = results.get(0);
@@ -290,17 +291,12 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
                     .append(param.getKey())
                     .append(" ");
         }
-
-//        Query query = entityManager.createNativeQuery(sqlBuilder.toString(), entityClass);
-//        for(Map.Entry<String, Object> entry : params.entrySet()) {
-//            query.setParameter(entry.getKey(), entry.getValue());
-//        }
-
         return namedParameterJdbcTemplate.query(sqlBuilder.toString(), params, new CommonRowMapper<>(entityClass));
     }
 
     public T findFirstByMap(Map<String, Object> params) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM " + tableName + " WHERE 1 = 1");
+        StringBuilder sqlBuilder = new StringBuilder(fillSQL("SELECT * FROM ${TABLE} WHERE 1 = 1"));
+
         for (Map.Entry<String, Object> param : params.entrySet()) {
             sqlBuilder.append(" AND ")
                     .append(Mapper.getColumnName(entityClass, param.getKey()))
@@ -314,27 +310,6 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
         List<T> entitys = namedParameterJdbcTemplate.query(sqlBuilder.toString(), params, new CommonRowMapper<>(entityClass));
         if (null != entitys && !entitys.isEmpty()) {
             return entitys.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 返回自定义对象
-     *
-     * @param sql   语句
-     * @param clazz 载体类
-     * @param <K>   模板
-     * @return 模板实例
-     */
-    public <K> K findOne(String sql, Map<String, Object> params, Class<K> clazz) {
-        StringBuilder sqlBuilder = new StringBuilder(sql)
-                .append(" LIMIT 1");
-
-        List<K> resultList = namedParameterJdbcTemplate.query(sqlBuilder.toString(), params, new CommonRowMapper<>(clazz));
-
-        if (null != resultList && !resultList.isEmpty()) {
-            return resultList.get(0);
         } else {
             return null;
         }
