@@ -1,6 +1,5 @@
 package cn.daycode.spring.boot.autoconfigure;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -12,9 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = DurexJdbcProperties.DUREX_JDBC_PREFIX)
 public class DurexJdbcProperties {
 
-    @Autowired
-    private DurexJdbcProperties durexJdbcProperties;
-
     public static final String DUREX_JDBC_PREFIX = "durex.jdbc";
 
     private static final String DEFAULT_SUFFIX = ".sql";
@@ -23,14 +19,6 @@ public class DurexJdbcProperties {
     private String directory;
 
     private String suffix = DEFAULT_SUFFIX;
-
-    public DurexJdbcProperties getDurexJdbcProperties() {
-        return durexJdbcProperties;
-    }
-
-    public void setDurexJdbcProperties(DurexJdbcProperties durexJdbcProperties) {
-        this.durexJdbcProperties = durexJdbcProperties;
-    }
 
     public String getDirectory() {
         return directory;
