@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>durex-jdbc-spring-boot-starter</artifactId>
-    <version>${durex-jdbc-spring-boot-starter.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
 
