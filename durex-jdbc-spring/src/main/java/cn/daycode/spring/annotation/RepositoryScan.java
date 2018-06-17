@@ -20,6 +20,8 @@ import java.lang.annotation.*;
 @Import({RepositoryScannerRegistrar.class})
 public @interface RepositoryScan {
 
+    String[] value() default {};
+
     /**
      * Base packages to scan for Durex-jdbc interfaces. Note that only interfaces
      * with at least one method will be registered; concrete classes will be
